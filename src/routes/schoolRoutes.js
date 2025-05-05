@@ -17,4 +17,5 @@ Router.delete('/schoolPhoto/:id',authController.protect, schoolController.delete
 Router.delete('/schoolVideo/:id',authController.protect, schoolController.deleteVideoByIndex);
 Router.delete('/vehiclePhoto/:id',authController.protect, schoolController.deleteVehiclePhotoByIndex);
 
+
 export default Router;
