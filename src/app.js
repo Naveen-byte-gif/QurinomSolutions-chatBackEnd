@@ -12,6 +12,7 @@ import cors from "cors";
 dotenv.config(); 
 
 import userRouter from "./routes/userRoutes.js";
+import schoolRouter from "./routes/schoolRoutes.js";
 
 
 const app = express();
@@ -20,6 +21,7 @@ app.use(express.json());
 app.use(cors());
 
 app.use("/api/users", userRouter);
+app.use("/api/school", schoolRouter);
 
 
 export default app;
