@@ -38,6 +38,7 @@ const TimetableSchema = new mongoose.Schema(
 
 const DrivingSchoolSchema = new mongoose.Schema(
   {
+    ////todo ------need to add fee field//////////
     schoolName: {
       type: String,
       trim: true,
