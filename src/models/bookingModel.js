@@ -16,16 +16,24 @@ const BookingSchema = new mongoose.Schema(
     duration:{
         type: Number,
     },
-    selectedDay: [{
+    // selectedDay: [{
+    //   type: String,
+    //   enum: [
+    //     "Monday",
+    //     "Tuesday",
+    //     "Wednesday",
+    //     "Thursday",
+    //     "Friday",
+    //     "Saturday",
+    //     "Sunday",
+    //   ],
+    // },],
+    bookingPackage: [{
       type: String,
       enum: [
-        "Monday",
-        "Tuesday",
-        "Wednesday",
-        "Thursday",
-        "Friday",
-        "Saturday",
-        "Sunday",
+        "One Month",
+        "Two Months",
+        "15 days",
       ],
     },],
     selectedSlot: {

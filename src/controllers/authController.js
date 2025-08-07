@@ -101,3 +101,33 @@ const signToken = (id) => {
     }
   });
   
+
+
+  
+export const changePassword = catchAsync(async (req, res, next) => {
+  const { currentPassword, newPassword } = req.body;
+
+  if (!currentPassword || !newPassword) {
+    return res.status(400).json({ message: "Both current and new passwords are required" });
+  }
+
+  // Get the currently logged-in user
+  const user = await User.findById(req.user.id).select("+password");
+
+  if (!user) {
+    return res.status(404).json({ message: "User not found" });
+  }
+
+  // Check if current password is correct
+  const isMatch = await bcrypt.compare(currentPassword, user.password);
+
+  if (!isMatch) {
+    return res.status(401).json({ message: "Current password is incorrect" });
+  }
+
+  // Update to new password
+  user.password = newPassword;
+  await user.save();
+
+  res.status(200).json({ message: "Password changed successfully" });
+});
