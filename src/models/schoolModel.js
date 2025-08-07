@@ -54,6 +54,9 @@ const DrivingSchoolSchema = new mongoose.Schema(
     contactNumber: {
       type: String,
     },
+    rating: {
+      type: String,
+    },
     schoolPhotos: [
       {
         type: String,
@@ -69,7 +72,7 @@ const DrivingSchoolSchema = new mongoose.Schema(
       required: true,
     },
     forWhom: {
-      type: [String], // e.g., ["Beginners", "Elderly", "Women"]
+      type: [String], // e.g., ["Beginners", "Elderly", "Women","all"]
       required: true,
     },
     slotTimings: {
@@ -92,11 +95,21 @@ const DrivingSchoolSchema = new mongoose.Schema(
       type: Boolean,
       default: true,
     },
-    verificationStatus: {
+    // verificationStatus: {
+    //   type: String,
+    //   enum: ["Pending", "Verified", "Rejected"],
+    //   default: "Pending",
+    // },
+
+
+     bookingPackage: [{
       type: String,
-      enum: ["Pending", "Verified", "Rejected"],
-      default: "Pending",
-    },
+      enum: [
+        "One Month",
+        "Two Months",
+        "15 days",
+      ],
+    },],
   },
   {
     timestamps: true,

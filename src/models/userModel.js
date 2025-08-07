@@ -59,7 +59,16 @@ const userSchema = new mongoose.Schema({
   passwordChangedDate: {
     type: Date,
   },
- 
+ otp: {
+  type: String,
+},
+otpExpires: {
+  type: Date,
+},
+  deleted: {
+    type: Boolean,
+    default: false,
+  },
 });
 
 // Hash password before saving
