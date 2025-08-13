@@ -83,3 +83,20 @@ export const editUser = catchAsync(async (req, res, next) => {
     },
   });
 });
+
+export const getUserById = catchAsync(async (req, res, next) => {
+  const id = req.params.id; // ✅ Correct: req.params, not req.param
+  const user = await User.findById(id);
+
+  if (!user) {
+    return res.status(400).json({
+      status: "fail",
+      message: "No user found",
+    });
+  }
+
+  res.status(200).json({
+    status: "success",
+    data: { user },
+  });
+});
