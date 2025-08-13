@@ -35,7 +35,9 @@ const signToken = (id) => {
     }
   
     // Check if the user exists
-    const user = await User.findOne({ email });
+   const user = await User.findOne({ email }).select('accountType _id').select('password');
+
+
 //   console.log("user",user)
     if (!user) {
       return res.status(401).json({

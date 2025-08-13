@@ -13,5 +13,6 @@ Router.post("/changeOldPassword", authController.protect,authController.changePa
 
 
 Router.put("/edit", authController.protect,userController.editUser);
+Router.get("/userDetails/:id",authController.protect, userController.getUserById);
 
 export default Router;
