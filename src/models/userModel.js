@@ -24,6 +24,9 @@ const userSchema = new mongoose.Schema({
     type: String,
 
   },
+  dob: {
+    type: String, 
+  },
   location: {
     type: String,
   
@@ -69,6 +72,16 @@ otpExpires: {
     type: Boolean,
     default: false,
   },
+   aadharNo: {
+    type: String,
+  },
+   panNo: {
+    type: String, 
+  },
+  voterId: {
+    type: String, 
+  },
+
 });
 
 // Hash password before saving
