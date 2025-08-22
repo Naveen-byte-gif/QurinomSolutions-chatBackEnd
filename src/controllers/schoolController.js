@@ -18,7 +18,7 @@ export const createDrivingSchool = catchAsync(async (req, res, next) => {
 export const getAllDrivingSchools = catchAsync(async (req, res, next) => {
   const schools = await DrivingSchool.find()
     .populate("schoolOwner", "firstName lastName email")
-    .populate("coworkers", "firstName lastName email");
+    .populate("coWorkers", "firstName lastName email");
   res.status(200).json({ success: true, count: schools.length, data: schools });
 });
 
@@ -26,17 +26,35 @@ export const getAllDrivingSchoolsWithoutLogin = catchAsync(
   async (req, res, next) => {
     const schools = await DrivingSchool.find()
       .populate("schoolOwner", "firstName lastName email")
-      .populate("coworkers", "firstName lastName email");
+      .populate("coWorkers", "firstName lastName email");
     res
       .status(200)
       .json({ success: true, count: schools.length, data: schools });
   }
 );
+export const getAllDrivingSchoolsbyUserId = catchAsync(
+  async (req, res, next) => {
+    const  schoolOwnerId = req.user.id;
+
+    const filter = schoolOwnerId ? { schoolOwner: schoolOwnerId } : {};
+
+    const schools = await DrivingSchool.find(filter)
+      .populate("schoolOwner", "firstName lastName email profile")
+      .populate("coWorkers", "firstName lastName email profile");
+
+    res.status(200).json({
+      success: true,
+      count: schools.length,
+      data: schools,
+    });
+  }
+);
+
 // Get a driving school by ID
 export const getDrivingSchoolById = catchAsync(async (req, res, next) => {
   const school = await DrivingSchool.findById(req.params.id)
     .populate("schoolOwner", "firstName lastName email")
-    .populate("coworkers", "firstName lastName email");
+    .populate("coWorkers", "firstName lastName email");
   if (!school) {
     return res
       .status(404)
@@ -44,22 +62,47 @@ export const getDrivingSchoolById = catchAsync(async (req, res, next) => {
   }
   res.status(200).json({ success: true, data: school });
 });
-
 // Update a driving school
 export const updateDrivingSchool = catchAsync(async (req, res, next) => {
   const { id } = req.params;
+  const updateData = { ...req.body };
+
+  // If coworkers are provided, use $addToSet to avoid duplicates
+  if (updateData.coWorkers) {
+    const school = await DrivingSchool.findByIdAndUpdate(
+      id,
+      {
+        $set: { ...updateData, coWorkers: undefined }, // remove coworkers from $set
+        $addToSet: { coWorkers: { $each: updateData.coWorkers } }, // add new coworkers
+      },
+      { new: true, runValidators: true }
+    );
+
+    if (!school) {
+      return res
+        .status(404)
+        .json({ success: false, message: "Driving school not found" });
+    }
+
+    return res.status(200).json({ success: true, data: school });
+  }
+
+  // Normal update if no coworkers provided
   const school = await DrivingSchool.findByIdAndUpdate(
     id,
-    { $set: { ...req.body } }, // dynamically updates fields provided
+    { $set: updateData },
     { new: true, runValidators: true }
   );
+
   if (!school) {
     return res
       .status(404)
       .json({ success: false, message: "Driving school not found" });
   }
+
   res.status(200).json({ success: true, data: school });
 });
+
 
 // Delete a driving school
 export const deleteDrivingSchool = catchAsync(async (req, res, next) => {

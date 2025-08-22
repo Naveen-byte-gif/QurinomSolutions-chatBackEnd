@@ -82,7 +82,8 @@ const DrivingSchoolSchema = new mongoose.Schema(
     vehiclePhotos: {
       type: [String], // URLs or local paths
     },
-    coworkers: [
+   
+    coWorkers: [
       {
         type: mongoose.Schema.ObjectId,
         ref: "User",
@@ -94,6 +95,9 @@ const DrivingSchoolSchema = new mongoose.Schema(
     isActive: {
       type: Boolean,
       default: true,
+    },
+    noOfVehicles: {
+      type: String,
     },
     // verificationStatus: {
     //   type: String,

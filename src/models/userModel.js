@@ -45,11 +45,14 @@ const userSchema = new mongoose.Schema({
   },
   accountType: {
     type: String,
-    enum: ['User', 'Vendor','Admin'],
+    enum: ['User', 'Vendor','Admin','Worker'],
     default:'User',
   },
-  
-  
+  schoolId: 
+        {
+          type: mongoose.Schema.ObjectId,
+          ref: "DrivingSchool",
+        },
   createdDate: {
     type: Date,
     default: Date.now, 

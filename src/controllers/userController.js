@@ -2,6 +2,10 @@ import crypto from "crypto";
 import nodemailer from "nodemailer";
 import User from "../models/userModel.js";
 import { catchAsync } from "../utils/catchAsync.js";
+import fs from "fs";
+import path from "path";
+import getUploadPath from "../utils/pathFun.js";
+import multerWrapper from "../utils/multerFun.js";
 
 export const forgotPassword = catchAsync(async (req, res, next) => {
   const { email } = req.body;
