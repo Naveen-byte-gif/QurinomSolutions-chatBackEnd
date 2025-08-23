@@ -43,11 +43,22 @@ const DrivingSchoolSchema = new mongoose.Schema(
       type: String,
       trim: true,
     },
+    schoolEmail: {
+      type: String,
+    },
     schoolOwner: {
       type: mongoose.Schema.ObjectId,
       ref: "User",
     },
-
+    city: {
+      type: String,
+    },
+    state: {
+      type: String,
+    },
+    pincode: {
+      type: String,
+    },
     schoolAddress: {
       type: String,
     },
