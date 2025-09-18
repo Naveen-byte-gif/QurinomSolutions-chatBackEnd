@@ -10,9 +10,8 @@ Router.route("/").post(authController.createUser);
 Router.post("/forgotRequest", userController.forgotPassword);
 Router.post("/restetPassword", userController.resetPassword);
 Router.post("/changeOldPassword", authController.protect,authController.changePassword);
+Router.get("/otherUsers", authController.protect,userController.getOtherUsers);
 
 
-Router.put("/edit", authController.protect,userController.editUser);
-Router.get("/userDetails/:id",authController.protect, userController.getUserById);
 
 export default Router;

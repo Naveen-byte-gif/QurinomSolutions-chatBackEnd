@@ -104,3 +104,17 @@ export const getUserById = catchAsync(async (req, res, next) => {
     data: { user },
   });
 });
+
+export const getOtherUsers = catchAsync(async (req, res, next) => {
+
+    const loginUserId = req.user._id; 
+
+    const users = await User.find({ _id: { $ne: loginUserId } });
+
+    res.status(200).json({
+      status: "success",
+      results: users.length,
+      data: users,
+    });
+ 
+});

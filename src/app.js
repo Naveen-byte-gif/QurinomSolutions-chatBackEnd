@@ -12,8 +12,7 @@ const __dirname = path.dirname(__filename);
 dotenv.config();
 
 import userRouter from "./routes/userRoutes.js";
-import schoolRouter from "./routes/schoolRoutes.js";
-import bookingRouter from "./routes/bookingRoutes.js";
+import chatRouter from "./routes/chatRoutes.js";
 
 const app = express();
 app.use(express.json());
@@ -21,6 +20,5 @@ app.use(express.json());
 app.use(cors());
 app.use("/api", express.static(path.join(__dirname)));
 app.use("/api/users", userRouter);
-app.use("/api/school", schoolRouter);
-app.use("/api/bookings", bookingRouter);
+app.use("/api/chat", chatRouter);
 export default app;

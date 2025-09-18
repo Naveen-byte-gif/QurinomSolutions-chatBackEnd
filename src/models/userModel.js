@@ -6,18 +6,13 @@ import bcrypt from "bcryptjs";
 
 
 const userSchema = new mongoose.Schema({
-  firstName: {
-    type: String,
-    required: [true, "Please tell us your first name!"],
-  },
-  lastName: {
+  name: {
     type: String,
   },
+ 
   email: {
     type: String,
-    required: [true, "Please tell us your email!"],
     unique: true,
-    lowercase: true,
   
   },
   phoneNumber: {
@@ -35,55 +30,19 @@ const userSchema = new mongoose.Schema({
     type: String,
    
   },
-  bio: {
-    type: String,
-   
-  },
-  gender: {
-    type: String,
-    enum: ['Male', 'Female','Trans'],
-  },
-  accountType: {
-    type: String,
-    enum: ['User', 'Vendor','Admin','Worker'],
-    default:'User',
-  },
-  schoolId: 
-        {
-          type: mongoose.Schema.ObjectId,
-          ref: "DrivingSchool",
-        },
+  
   createdDate: {
     type: Date,
     default: Date.now, 
   },
   password: {
     type: String,
-    required: [true, "Please provide a password"],
     minlength: 8,
   },
   passwordChangedDate: {
     type: Date,
   },
- otp: {
-  type: String,
-},
-otpExpires: {
-  type: Date,
-},
-  deleted: {
-    type: Boolean,
-    default: false,
-  },
-   aadharNo: {
-    type: String,
-  },
-   panNo: {
-    type: String, 
-  },
-  voterId: {
-    type: String, 
-  },
+ 
 
 });
 
