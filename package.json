@@ -1,17 +1,16 @@
 {
   "name": "learndriving-backend",
   "version": "1.0.0",
- "main": "src/server.js",
-
+  "description": "Backend for Learn Driving app",
+  "main": "src/server.js",
   "type": "module",
-"scripts": {
-  "start": "node src/server.js",
-  "dev": "nodemon src/server.js"
-},
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "nodemon src/server.js"
+  },
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "description": "",
   "dependencies": {
     "bcryptjs": "^3.0.2",
     "cors": "^2.8.5",
@@ -27,5 +26,8 @@
   },
   "devDependencies": {
     "nodemon": "^3.1.10"
+  },
+  "engines": {
+    "node": "22.x"
   }
 }
