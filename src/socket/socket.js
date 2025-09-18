@@ -1,12 +1,12 @@
 import { Server } from "socket.io";
 import http from "http";
-import app from "../app.js"; // Your Express app
+import app from "../app.js"; // Express app
 import User from "../models/userModel.js";
 
-// Create HTTP server
+// Create HTTP server from Express
 const server = http.createServer(app);
 
-// Init Socket.IO
+// Initialize Socket.IO
 const io = new Server(server, {
   cors: {
     origin: "*",
@@ -15,25 +15,22 @@ const io = new Server(server, {
   transports: ["websocket", "polling"],
 });
 
-// userId => [socketId...]
+// Map userId => [socketIds]
 const userSocketMap = {};
-// userId => online/offline
 const onlineUsers = {};
 
-// Get socket IDs for a user
+// Helper: get socket ids
 export const getReceiverSocketId = (receiverId) => {
   return userSocketMap[receiverId?.toString()] || [];
 };
 
-// Send notification to specific user
+// Send notification
 export const sendNotificationToUser = (userId, notification) => {
   const socketIds = getReceiverSocketId(userId);
-  socketIds.forEach((sid) => {
-    io.to(sid).emit("notification", notification);
-  });
+  socketIds.forEach((sid) => io.to(sid).emit("notification", notification));
 };
 
-// Emit all users with status
+// Emit all users with online/offline
 const emitAllUsersWithStatus = async () => {
   try {
     const users = await User.find({}, "_id name");
@@ -48,56 +45,39 @@ const emitAllUsersWithStatus = async () => {
   }
 };
 
-// Socket connection handler
+// Socket connection
 io.on("connection", (socket) => {
+  console.log("🔗 Socket connected:", socket.id);
+
   const userId = socket.handshake.query.userId;
-  if (!userId || userId === "undefined") {
-    console.warn("❌ No userId in socket handshake");
-    return;
-  }
+  if (!userId) return;
 
   const uid = userId.toString();
-  console.log(`✅ User connected: ${uid}, socket: ${socket.id}`);
 
-  // Add socket to map
+  // Map socket
   if (!userSocketMap[uid]) userSocketMap[uid] = [];
   userSocketMap[uid].push(socket.id);
 
-  // Mark online
   onlineUsers[uid] = true;
   io.emit("userStatusUpdate", { userId: uid, status: "online" });
   emitAllUsersWithStatus();
 
-  // Handle sending message
+  // Send message
   socket.on("sendMessage", ({ sender, receiver, text }) => {
-    const msg = {
-      sender,
-      receiver,
-      text,
-      timestamp: new Date(),
-    };
-
-    // Emit to receiver
+    const msg = { sender, receiver, text, timestamp: new Date() };
+    // Send to receiver
     const receiverSockets = getReceiverSocketId(receiver);
-    receiverSockets.forEach((sid) => {
-      io.to(sid).emit("newMessage", msg);
-    });
-
-    // Emit to sender (confirmation)
+    receiverSockets.forEach((sid) => io.to(sid).emit("newMessage", msg));
+    // Confirmation to sender
     io.to(socket.id).emit("newMessage", msg);
-
-    console.log(`💬 ${sender} -> ${receiver}: ${text}`);
   });
 
   // Disconnect
   socket.on("disconnect", () => {
-    console.log(`❌ Disconnected: ${uid} (socket ${socket.id})`);
-
-    // Remove socket from map
+    console.log(`❌ Disconnected: ${uid} (${socket.id})`);
     userSocketMap[uid] = (userSocketMap[uid] || []).filter(
       (sid) => sid !== socket.id
     );
-
     if (userSocketMap[uid].length === 0) {
       delete userSocketMap[uid];
       delete onlineUsers[uid];
@@ -107,4 +87,4 @@ io.on("connection", (socket) => {
   });
 });
 
-export { server, io, app };
+export { server, io ,app};
