@@ -1,24 +1,25 @@
 import express from "express";
 import mongoose from "mongoose";
-//import app from "../src/app.js";
 import dotenv from "dotenv";
 import { server, app } from "./socket/socket.js";
-dotenv.config();
-dotenv.config({ path: "./.env.development" });
 
-console.log("PORT:", process.env.PORT);
+// Load environment variables
+dotenv.config(); // default .env
+dotenv.config({ path: "./.env.development" }); // optional development overrides
 
+// Database connection
 const DB = process.env.DATABASE.replace(
   "<PASSWORD>",
   process.env.DATABASE_PASSWORD
 );
-console.log(DB);
+
 mongoose
   .connect(DB)
-  .then(() => console.log("DB connection successful"))
-  .catch((err) => console.error("DB connection error:", err));
-// const HOST = "192.168.0.104";
-const PORT = process.env.PORT;
-server.listen(process.env.PORT, () => {
-  console.log(`Server running at :${PORT}`);
+  .then(() => console.log("✅ DB connection successful"))
+  .catch((err) => console.error("❌ DB connection error:", err));
+
+// Start server
+const PORT = process.env.PORT || 5000; // fallback if PORT not set
+server.listen(PORT, () => {
+  console.log(`🚀 Server running on port ${PORT}`);
 });
