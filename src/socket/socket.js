@@ -7,6 +7,7 @@ const server = http.createServer(app);
 
 // Initialize Socket.IO
 const io = new Server(server, {
+  path: "/socket.io",
   cors: { origin: "*", methods: ["GET", "POST"] },
   transports: ["websocket", "polling"],
 });

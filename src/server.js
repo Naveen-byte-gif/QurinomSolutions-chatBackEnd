@@ -4,7 +4,6 @@ import mongoose from "mongoose";
 import dotenv from "dotenv";
 import { server, app } from "./socket/socket.js";
 dotenv.config();
-import { execSync } from "child_process";
 dotenv.config({ path: "./.env.development" });
 
 console.log("PORT:", process.env.PORT);
