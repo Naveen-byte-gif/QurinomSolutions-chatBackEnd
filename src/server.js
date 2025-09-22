@@ -18,8 +18,8 @@ mongoose
   .connect(DB)
   .then(() => console.log("DB connection successful"))
   .catch((err) => console.error("DB connection error:", err));
-
+const HOST = "192.168.0.104";
 const PORT = process.env.PORT;
-app.listen(process.env.PORT, () => {
-  console.log("server running on port", PORT);
+server.listen(process.env.PORT, HOST, () => {
+  console.log(`Server running at http://${HOST}:${PORT}`);
 });

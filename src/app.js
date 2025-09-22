@@ -1,24 +1,16 @@
 import express from "express";
-import dotenv from "dotenv";
 import cors from "cors";
-import path from "path";
-import fs from "fs";
-import multer from "multer";
-import { fileURLToPath } from "url"; // Import fileURLToPath
-// Define __dirname for ES modules
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-
-dotenv.config();
-
+import dotenv from "dotenv";
 import userRouter from "./routes/userRoutes.js";
 import chatRouter from "./routes/chatRoutes.js";
 
+dotenv.config();
+
 const app = express();
+app.use(cors());
 app.use(express.json());
 
-app.use(cors());
-app.use("/api", express.static(path.join(__dirname)));
 app.use("/api/users", userRouter);
 app.use("/api/chat", chatRouter);
+
 export default app;
